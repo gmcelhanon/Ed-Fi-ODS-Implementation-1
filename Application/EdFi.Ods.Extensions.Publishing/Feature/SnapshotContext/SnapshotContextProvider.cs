@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Web;
 using EdFi.Ods.Common.Context;
 
 namespace EdFi.Ods.Extensions.Publishing.Feature.SnapshotContext
@@ -15,13 +16,12 @@ namespace EdFi.Ods.Extensions.Publishing.Feature.SnapshotContext
 
         public SnapshotContext GetSnapshotContext()
         {
-            return _contextStorage.GetValue<SnapshotContext>(SnapshotContextKeyName)
-                ?? SnapshotContext.Empty;
+            return _contextStorage.GetValue<SnapshotContext>(SnapshotContextKeyName);
         }
 
-        public void SetSnapshotContext(SnapshotContext apiKeyContext)
+        public void SetSnapshotContext(SnapshotContext snapshotContext)
         {
-            _contextStorage.SetValue(SnapshotContextKeyName, apiKeyContext);
+            _contextStorage.SetValue(SnapshotContextKeyName, snapshotContext);
         }
 
         /// <summary>

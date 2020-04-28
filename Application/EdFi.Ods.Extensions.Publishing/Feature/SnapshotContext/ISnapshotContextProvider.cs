@@ -4,6 +4,6 @@ namespace EdFi.Ods.Extensions.Publishing.Feature.SnapshotContext
     {
         SnapshotContext GetSnapshotContext();
 
-        void SetSnapshotContext(SnapshotContext apiKeyContext);
+        void SetSnapshotContext(SnapshotContext snapshotContext);
     }
 }

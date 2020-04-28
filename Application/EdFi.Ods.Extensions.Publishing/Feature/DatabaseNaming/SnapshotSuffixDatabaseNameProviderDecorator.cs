@@ -34,18 +34,18 @@ namespace EdFi.Ods.Extensions.Publishing.Feature.DatabaseNaming
         {
             var snapshotContext = _snapshotContextProvider.GetSnapshotContext();
             
-            if (snapshotContext == null || string.IsNullOrEmpty(snapshotContext.SnapshotIdentifer))
+            if (snapshotContext == null || string.IsNullOrEmpty(snapshotContext.SnapshotIdentifier))
                 return _next.GetDatabaseName();
 
             // To prevent possible tampering, snapshot identifier must be a 32 character long value (accommodates a GUID)
-            if (snapshotContext.SnapshotIdentifer.Length != 32)
+            if (snapshotContext.SnapshotIdentifier.Length != 32)
                 throw new FormatException("Invalid value for snapshot identifier.");
             
             // To prevent possible tampering, snapshot identifier must only contain letters or numbers.
-            if (snapshotContext.SnapshotIdentifer.Any(c => !(char.IsLetter(c) || char.IsDigit(c))))
+            if (snapshotContext.SnapshotIdentifier.Any(c => !(char.IsLetter(c) || char.IsDigit(c))))
                 throw new FormatException("Invalid value for snapshot identifier.");
 
-            return _next.GetDatabaseName() + $"_SS{snapshotContext.SnapshotIdentifer}";
+            return _next.GetDatabaseName() + $"_SS{snapshotContext.SnapshotIdentifier}";
         }
     }
 }
