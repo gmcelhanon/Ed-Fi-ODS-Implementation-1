@@ -6,6 +6,7 @@
 using EdFi.Ods.Common.Extensions;
 using EdFi.Ods.Composites.Enrollment;
 using EdFi.Ods.Extensions.Homograph;
+using EdFi.Ods.Extensions.Publishing;
 using EdFi.Ods.Extensions.Sample;
 using EdFi.Ods.WebApi.Startup;
 using Microsoft.Owin;
@@ -21,6 +22,9 @@ namespace EdFi.Ods.WebApi.Startup
             AssemblyLoader.EnsureLoaded<Marker_EdFi_Ods_Composites_Enrollment>();
             AssemblyLoader.EnsureLoaded<Marker_EdFi_Ods_Extensions_Sample>();
             AssemblyLoader.EnsureLoaded<Marker_EdFi_Ods_Extensions_Homograph>();
+
+            // Extension for the API Publisher
+            AssemblyLoader.EnsureLoaded<Marker_EdFi_Ods_Extensions_Publishing>();
         }
     }
 }

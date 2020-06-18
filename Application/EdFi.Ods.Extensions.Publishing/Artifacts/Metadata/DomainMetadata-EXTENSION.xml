@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<AggregateExtensions logicalSchema="Publishing" schema="publishing">
+  <Aggregate root="Snapshot">
+    <Entity table="Snapshot" schema="publishing"/>
+  </Aggregate>
+</AggregateExtensions>

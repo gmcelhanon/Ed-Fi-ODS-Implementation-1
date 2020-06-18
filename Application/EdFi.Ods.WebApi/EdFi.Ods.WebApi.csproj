@@ -313,6 +313,10 @@
       <Project>{6710953a-5a70-4e95-a27c-1855ff492f52}</Project>
       <Name>EdFi.Ods.Extensions.Homograph</Name>
     </ProjectReference>
+    <ProjectReference Include="..\EdFi.Ods.Extensions.Publishing\EdFi.Ods.Extensions.Publishing.csproj">
+      <Project>{92B91756-2C3D-4BFE-8116-74A1A3130812}</Project>
+      <Name>EdFi.Ods.Extensions.Publishing</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EdFi.Ods.Extensions.Sample\EdFi.Ods.Extensions.Sample.csproj">
       <Project>{BCD5C6A3-16D4-46CA-AD13-1F38A1A4245A}</Project>
       <Name>EdFi.Ods.Extensions.Sample</Name>
