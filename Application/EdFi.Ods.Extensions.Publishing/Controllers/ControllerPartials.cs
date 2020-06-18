@@ -1,6 +1,7 @@
 using System;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Results;
 using EdFi.Ods.Api.Models.Requests.Publishing.Snapshots;
@@ -10,11 +11,11 @@ namespace EdFi.Ods.Api.Services.Controllers.Publishing.Snapshots
 {
     public partial class SnapshotsController
     {
-        public override IHttpActionResult Post(SnapshotPost request) => MethodNotAllowed();
+        public override async Task<IHttpActionResult> Post(SnapshotPost request) => await Task.FromResult(MethodNotAllowed());
 
-        public override IHttpActionResult Put(SnapshotPut request, Guid id) => MethodNotAllowed();
+        public override async Task<IHttpActionResult> Put(SnapshotPut request, Guid id) => await Task.FromResult(MethodNotAllowed());
 
-        public override IHttpActionResult Delete(Guid id) => MethodNotAllowed();
+        public override async Task<IHttpActionResult> Delete(Guid id) => await Task.FromResult(MethodNotAllowed());
 
         private IHttpActionResult MethodNotAllowed()
         {
