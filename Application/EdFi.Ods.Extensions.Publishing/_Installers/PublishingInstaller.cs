@@ -30,12 +30,12 @@ namespace EdFi.Ods.Extensions.Publishing._Installers
                     .ImplementedBy<SnapshotContextProvider>());
         }
 
-        protected virtual void RegisterIDatabaseNameProviderDecorator(IWindsorContainer container)
+        protected virtual void RegisterIDatabaseNameReplacementTokenProvider(IWindsorContainer container)
         {
             container.Register(
                 Component
-                    .For<IDatabaseNameProvider>()
-                    .ImplementedBy<SnapshotSuffixDatabaseNameProviderDecorator>());
+                    .For<IDatabaseNameReplacementTokenProvider>()
+                    .ImplementedBy<SnapshotSuffixDatabaseNameReplacementTokenProvider>());
         }
 
         protected virtual void RegisterExceptionTranslators(IWindsorContainer container)
