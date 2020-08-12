@@ -284,6 +284,24 @@ Function Invoke-RebuildSolution {
     }
 }
 
+function Reset-EmptyTemplateDatabase { 
+  Invoke-Task -name ($MyInvocation.MyCommand.Name) -task {
+        $config = Get-DeployConfig
+        $ods = $config.databaseIds.ods
+        $connectionString = Get-DbConnectionStringBuilderFromTemplate -templateCSB $config.connectionStrings[$ods.connectionStringKey] -replacementTokens $config.emptyTemplateSuffix
+        $params = @{
+            engine = $config.engine
+            csb = $connectionString
+            database = $ods.database
+            filePaths = $config.FilePaths
+            subTypeNames = @()
+            dropDatabase = $true
+        }
+        Initialize-EdFiDatabaseWithDbDeploy @params
+    }
+}
+
+
 function Reset-TestAdminDatabase {
     Invoke-Task -name $MyInvocation.MyCommand.Name -task {
         $config = Get-DeployConfig
