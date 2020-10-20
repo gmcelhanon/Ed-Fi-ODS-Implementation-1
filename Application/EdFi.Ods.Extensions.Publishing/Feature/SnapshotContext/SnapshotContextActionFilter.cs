@@ -5,10 +5,9 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http.Controllers;
-using System.Web.Http.Filters;
 using EdFi.Ods.Api.Services.Controllers.Publishing.Snapshots;
-using EdFi.Ods.Common;
 using EdFi.Ods.Common.Exceptions;
+using IActionFilter = System.Web.Http.Filters.IActionFilter;
 
 namespace EdFi.Ods.Extensions.Publishing.Feature.SnapshotContext
 {
@@ -20,7 +19,7 @@ namespace EdFi.Ods.Extensions.Publishing.Feature.SnapshotContext
 
         public SnapshotContextActionFilter(ISnapshotContextProvider snapshotContextProvider)
         {
-            _snapshotContextProvider = Preconditions.ThrowIfNull(snapshotContextProvider, nameof(snapshotContextProvider));
+            _snapshotContextProvider = snapshotContextProvider;
         }
         
         public bool AllowMultiple { get; } = false;

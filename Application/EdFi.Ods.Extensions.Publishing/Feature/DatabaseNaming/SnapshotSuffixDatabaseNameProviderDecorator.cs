@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using EdFi.Ods.Common.Database;
-using EdFi.Ods.Common.Exceptions;
 using EdFi.Ods.Extensions.Publishing.Feature.SnapshotContext;
 
 namespace EdFi.Ods.Extensions.Publishing.Feature.DatabaseNaming
@@ -33,14 +32,10 @@ namespace EdFi.Ods.Extensions.Publishing.Feature.DatabaseNaming
         public string GetReplacementToken()
         {
             var snapshotContext = _snapshotContextProvider.GetSnapshotContext();
-            
+
             if (snapshotContext == null || string.IsNullOrEmpty(snapshotContext.SnapshotIdentifier))
                 return _next.GetReplacementToken();
 
-            // To prevent possible tampering, snapshot identifier must be a 32 character long value (accommodates a GUID)
-            if (snapshotContext.SnapshotIdentifier.Length != 32)
-                throw new FormatException("Invalid value for snapshot identifier.");
-            
             // To prevent possible tampering, snapshot identifier must only contain letters or numbers.
             if (snapshotContext.SnapshotIdentifier.Any(c => !(char.IsLetter(c) || char.IsDigit(c))))
                 throw new FormatException("Invalid value for snapshot identifier.");
