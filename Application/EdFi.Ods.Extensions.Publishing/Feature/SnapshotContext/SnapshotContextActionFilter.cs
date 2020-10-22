@@ -4,14 +4,15 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Web.Http.Controllers;
+using EdFi.Common.Extensions;
 using EdFi.Ods.Api.Services.Controllers.Publishing.Snapshots;
 using EdFi.Ods.Common.Exceptions;
-using IActionFilter = System.Web.Http.Filters.IActionFilter;
+using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.Extensions.Primitives;
 
 namespace EdFi.Ods.Extensions.Publishing.Feature.SnapshotContext
 {
-    public class SnapshotContextActionFilter : IActionFilter
+    public class SnapshotContextActionFilter : IAsyncActionFilter
     {
         public const string SnapshotIdentifierHeaderName = "Snapshot-Identifier";
         
@@ -22,23 +23,18 @@ namespace EdFi.Ods.Extensions.Publishing.Feature.SnapshotContext
             _snapshotContextProvider = snapshotContextProvider;
         }
         
-        public bool AllowMultiple { get; } = false;
-
-        public Task<HttpResponseMessage> ExecuteActionFilterAsync(
-            HttpActionContext actionContext, 
-            CancellationToken cancellationToken, 
-            Func<Task<HttpResponseMessage>> continuation)
+        public Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
             // Don't process "snapshots" requests against a snapshot database
-            if (actionContext.ControllerContext.Controller is SnapshotsController)
-                return continuation();
-            
-            IEnumerable<string> values;
-
-            if (actionContext.Request.Headers.TryGetValues(SnapshotIdentifierHeaderName, out values))
+            if (context.Controller is SnapshotsController)
             {
-                if (actionContext.Request.Method != HttpMethod.Get
-                    && actionContext.Request.Method != HttpMethod.Options)
+                return next();
+            }
+
+            if (context.HttpContext.Request.Headers.TryGetValue(SnapshotIdentifierHeaderName, out StringValues values))
+            {
+                if (!context.HttpContext.Request.Method.EqualsIgnoreCase(HttpMethod.Get.ToString())
+                    && !context.HttpContext.Request.Method.EqualsIgnoreCase(HttpMethod.Options.ToString()))
                 {
                     throw new MethodNotAllowedException("Snapshots are read-only.");
                 }
@@ -47,7 +43,7 @@ namespace EdFi.Ods.Extensions.Publishing.Feature.SnapshotContext
                     new SnapshotContext(values.FirstOrDefault()));
             }
 
-            return continuation();
+            return next();
         }
     }
 }

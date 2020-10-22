@@ -42,10 +42,7 @@
     <ProjectReference Include="..\..\..\Ed-Fi-ODS\Application\EdFi.Ods.Security\EdFi.Ods.Security.csproj" />
     <ProjectReference Include="..\..\..\Ed-Fi-ODS\Application\EdFi.Ods.Standard\EdFi.Ods.Standard.csproj" />
     <ProjectReference Include="..\..\..\Ed-Fi-ODS\Application\EdFi.Security.DataAccess\EdFi.Security.DataAccess.csproj" />
-    <ProjectReference Include="..\EdFi.Ods.Extensions.Publishing\EdFi.Ods.Extensions.Publishing.csproj">
-      <Project>{92B91756-2C3D-4BFE-8116-74A1A3130812}</Project>
-      <Name>EdFi.Ods.Extensions.Publishing</Name>
-    </ProjectReference>
+    <ProjectReference Include="..\EdFi.Ods.Extensions.Publishing\EdFi.Ods.Extensions.Publishing.csproj" />
   </ItemGroup>
 
   <ItemGroup>
