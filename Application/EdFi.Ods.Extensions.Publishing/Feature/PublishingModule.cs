@@ -17,7 +17,7 @@ namespace EdFi.Ods.Extensions.Publishing.Feature
         public PublishingModule(ApiSettings apiSettings)
             : base(apiSettings, nameof(PublishingModule)) { }
 
-        public override bool IsSelected() => IsFeatureEnabled(ApiFeature.ChangeQueries);
+        public override bool IsSelected() => IsFeatureEnabled(ApiFeature.Publishing);
 
         public override void ApplyConfigurationSpecificRegistrations(ContainerBuilder builder)
         {
@@ -25,10 +25,10 @@ namespace EdFi.Ods.Extensions.Publishing.Feature
                     .As<ISnapshotContextProvider>();
 
             builder.RegisterType<SnapshotContextActionFilter>()
-                .As<IFilterMetadata>();
+                .As<IFilterMetadata>()
+                .SingleInstance();
             
-            builder.RegisterType<SnapshotSuffixDatabaseNameReplacementTokenProvider>()
-                .As<IDatabaseNameReplacementTokenProvider>();
+            builder.RegisterDecorator<SnapshotSuffixDatabaseNameReplacementTokenProvider, IDatabaseNameReplacementTokenProvider>();
 
             builder.RegisterType<SnapshotGoneExceptionTranslator>()
                 .As<IExceptionTranslator>();
