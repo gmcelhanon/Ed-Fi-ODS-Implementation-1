@@ -9,6 +9,10 @@ using Microsoft.Extensions.Primitives;
 
 namespace EdFi.Ods.Extensions.Publishing.Feature.SnapshotContext
 {
+    /// <summary>
+    /// Implements an action filter that sets the <see cref="SnapshotContext" /> based on the
+    /// "Snapshot-Identifier" header value supplied on the current API request, if applicable.
+    /// </summary>
     public class SnapshotContextActionFilter : IAsyncActionFilter
     {
         public const string SnapshotIdentifierHeaderName = "Snapshot-Identifier";
@@ -22,7 +26,7 @@ namespace EdFi.Ods.Extensions.Publishing.Feature.SnapshotContext
         
         public Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-            // Don't process "snapshots" requests against a snapshot database
+            // Don't process "snapshot" requests against a snapshot database
             if (context.Controller is SnapshotsController)
             {
                 return next();
@@ -30,6 +34,7 @@ namespace EdFi.Ods.Extensions.Publishing.Feature.SnapshotContext
 
             if (context.HttpContext.Request.Headers.TryGetValue(SnapshotIdentifierHeaderName, out StringValues values))
             {
+                // Ensure attempts to modify the snapshot are prevented
                 if (!context.HttpContext.Request.Method.EqualsIgnoreCase(HttpMethod.Get.ToString())
                     && !context.HttpContext.Request.Method.EqualsIgnoreCase(HttpMethod.Options.ToString()))
                 {

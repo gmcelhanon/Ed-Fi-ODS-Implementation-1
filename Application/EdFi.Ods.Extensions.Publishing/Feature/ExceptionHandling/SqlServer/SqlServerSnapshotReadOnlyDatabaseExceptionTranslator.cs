@@ -1,5 +1,6 @@
 using System;
 using System.Data.SqlClient;
+using System.Linq;
 using System.Net;
 using EdFi.Common.Extensions;
 using EdFi.Ods.Api.ExceptionHandling;
@@ -13,6 +14,12 @@ namespace EdFi.Ods.Extensions.Publishing.Feature.ExceptionHandling.SqlServer
     {
         private readonly ISnapshotContextProvider _snapshotContextProvider;
 
+        private readonly int[] _sqlServerErrorNumbers =
+        {
+            // Failed to update database "{database_name}" because the database is read-only.
+            3906,
+        };
+        
         public SqlServerSnapshotReadOnlyDatabaseExceptionTranslator(ISnapshotContextProvider snapshotContextProvider)
         {
             _snapshotContextProvider = snapshotContextProvider;
@@ -26,9 +33,9 @@ namespace EdFi.Ods.Extensions.Publishing.Feature.ExceptionHandling.SqlServer
                 ? ex.InnerException
                 : ex;
 
-            if (exception is SqlException)
+            if (exception is SqlException sqlException)
             {
-                if (exception.Message.EndsWith("because the database is read-only.")
+                if (_sqlServerErrorNumbers.Contains(sqlException.Number)
                     && _snapshotContextProvider.GetSnapshotContext() != null)
                 {
                     webServiceError = new RESTError

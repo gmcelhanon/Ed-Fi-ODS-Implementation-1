@@ -1,5 +1,6 @@
 using System;
 using System.Data.SqlClient;
+using System.Linq;
 using System.Net;
 using EdFi.Common.Extensions;
 using EdFi.Ods.Api.ExceptionHandling;
@@ -14,6 +15,17 @@ namespace EdFi.Ods.Extensions.Publishing.Feature.ExceptionHandling.SqlServer
     {
         private readonly ISnapshotContextProvider _snapshotContextProvider;
 
+        private readonly int[] _sqlServerErrorNumbers =
+        {
+            // Cannot open database "{database_name}" requested by the login. The login failed.
+            // https://docs.microsoft.com/en-us/sql/relational-databases/errors-events/database-engine-events-and-errors?view=sql-server-ver15
+            4060,
+
+            // A connection was successfully established with the server, but then an error occurred during the login process.
+            // https://docs.microsoft.com/en-us/sql/relational-databases/errors-events/mssqlserver-233-database-engine-error?view=sql-server-ver15
+            233
+        };
+
         public SqlServerSnapshotConnectionExceptionTranslator(ISnapshotContextProvider snapshotContextProvider)
         {
             _snapshotContextProvider = snapshotContextProvider;
@@ -27,10 +39,9 @@ namespace EdFi.Ods.Extensions.Publishing.Feature.ExceptionHandling.SqlServer
                 ? ex.InnerException
                 : ex;
 
-            if (exception is SqlException)
+            if (exception is SqlException sqlException)
             {
-                if ((exception.Message.StartsWith("Cannot open database")
-                        || exception.Message.StartsWith("A connection was successfully established with the server, but then an error occurred during the login process."))
+                if (_sqlServerErrorNumbers.Contains(sqlException.Number)
                     && _snapshotContextProvider.GetSnapshotContext() != null)
                 {
                     webServiceError = new RESTError

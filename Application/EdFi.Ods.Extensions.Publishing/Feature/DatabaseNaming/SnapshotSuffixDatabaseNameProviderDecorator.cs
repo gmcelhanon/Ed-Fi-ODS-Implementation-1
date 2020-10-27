@@ -28,7 +28,7 @@ namespace EdFi.Ods.Extensions.Publishing.Feature.DatabaseNaming
         /// </summary>
         /// <returns>The configured token replacement with a snapshot database suffix appended.</returns>
         /// <exception cref="FormatException">Occurs if the snapshot identifier in context
-        /// is not a 32-character alphanumeric value.</exception>
+        /// is not an alphanumeric value.</exception>
         public string GetReplacementToken()
         {
             var snapshotContext = _snapshotContextProvider.GetSnapshotContext();

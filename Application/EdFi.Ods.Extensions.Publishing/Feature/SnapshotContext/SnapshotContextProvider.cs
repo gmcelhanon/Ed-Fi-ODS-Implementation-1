@@ -14,11 +14,19 @@ namespace EdFi.Ods.Extensions.Publishing.Feature.SnapshotContext
             _contextStorage = contextStorage;
         }
 
+        /// <summary>
+        /// Gets the <see cref="SnapshotContext" /> for the current API request.
+        /// </summary>
+        /// <returns>The current context.</returns>
         public SnapshotContext GetSnapshotContext()
         {
             return _contextStorage.GetValue<SnapshotContext>(SnapshotContextKeyName);
         }
 
+        /// <summary>
+        /// Sets the <see cref="SnapshotContext" /> for the current API request.
+        /// </summary>
+        /// <param name="snapshotContext">The snapshot context to be set.</param>
         public void SetSnapshotContext(SnapshotContext snapshotContext)
         {
             _contextStorage.SetValue(SnapshotContextKeyName, snapshotContext);

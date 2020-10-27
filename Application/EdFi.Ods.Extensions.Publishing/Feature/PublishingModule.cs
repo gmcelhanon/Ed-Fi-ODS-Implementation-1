@@ -38,7 +38,8 @@ namespace EdFi.Ods.Extensions.Publishing.Feature
                 .As<IExceptionTranslator>();
 
             // This one handles SQL-specific exceptions to achieve 405 Method Not Allowed response
-            // when a snapshot context is in place and the SQL Database is read-only.
+            // when a snapshot context is provided and the API client attempts to modify
+            // data against the read-only SQL Database.
             builder.RegisterType<SqlServerSnapshotReadOnlyDatabaseExceptionTranslator>()
                 .As<IExceptionTranslator>();
         }
