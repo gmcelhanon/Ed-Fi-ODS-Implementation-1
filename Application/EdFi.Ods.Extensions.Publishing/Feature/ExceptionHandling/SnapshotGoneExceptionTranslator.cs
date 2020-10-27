@@ -39,21 +39,21 @@ namespace EdFi.Ods.Extensions.Publishing.Feature.ExceptionHandling
             var exception = ex is GenericADOException
                 ? ex.InnerException
                 : ex;
-            
-            if (!(exception is DatabaseConnectionException)
-                || _snapshotContextProvider.GetSnapshotContext() == null)
+
+            if (exception is DatabaseConnectionException
+                && _snapshotContextProvider.GetSnapshotContext() != null)
             {
-                return false;
+                webServiceError = new RESTError
+                {
+                    Code = (int) HttpStatusCode.Gone,
+                    Type = HttpStatusCode.Gone.ToString().NormalizeCompositeTermForDisplay(), 
+                    Message = "Snapshot not available."
+                };
+                
+                return true;
             }
 
-            webServiceError = new RESTError
-            {
-                Code = (int) HttpStatusCode.Gone,
-                Type = HttpStatusCode.Gone.ToString().NormalizeCompositeTermForDisplay(), 
-                Message = "Snapshot not available."
-            };
-
-            return true;
+            return false;
         }
     }
 }

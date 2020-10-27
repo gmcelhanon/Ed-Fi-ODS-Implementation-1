@@ -3,7 +3,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using EdFi.Common.Extensions;
 using EdFi.Ods.Api.Services.Controllers.Publishing.Snapshots;
-using EdFi.Ods.Common.Exceptions;
+using EdFi.Ods.Extensions.Publishing.Feature.ActionResults;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Primitives;
 
@@ -15,7 +15,7 @@ namespace EdFi.Ods.Extensions.Publishing.Feature.SnapshotContext
     /// </summary>
     public class SnapshotContextActionFilter : IAsyncActionFilter
     {
-        public const string SnapshotIdentifierHeaderName = "Snapshot-Identifier";
+        private const string SnapshotIdentifierHeaderName = "Snapshot-Identifier";
         
         private readonly ISnapshotContextProvider _snapshotContextProvider;
 
@@ -38,7 +38,8 @@ namespace EdFi.Ods.Extensions.Publishing.Feature.SnapshotContext
                 if (!context.HttpContext.Request.Method.EqualsIgnoreCase(HttpMethod.Get.ToString())
                     && !context.HttpContext.Request.Method.EqualsIgnoreCase(HttpMethod.Options.ToString()))
                 {
-                    throw new MethodNotAllowedException("Snapshots are read-only.");
+                    context.Result = new SnapshotsAreReadOnlyResult();
+                    return Task.CompletedTask;
                 }
                 
                 _snapshotContextProvider.SetSnapshotContext(
