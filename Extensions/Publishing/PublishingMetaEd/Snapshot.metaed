@@ -1,0 +1,10 @@
+Domain Entity Snapshot
+    documentation "Contains information about a snapshot used to create isolation from ongoing changes for API client synchronization."
+    string SnapshotIdentifier
+        documentation "The unique identifier of the snapshot."
+        is part of identity
+        min length 1
+        max length 32
+    datetime SnapshotDateTime
+        documentation "The date and time that the snapshot was initiated."
+        is required
