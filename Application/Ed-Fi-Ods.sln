@@ -99,6 +99,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EdFi.Ods.WebApi.CompositeSp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EdFi.Ods.WebApi", "EdFi.Ods.WebApi\EdFi.Ods.WebApi.csproj", "{538782E7-25DC-494D-902D-3EE2EC839DC6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EdFi.Ods.Generator", "..\..\Ed-Fi-ODS\Utilities\Generator\EdFi.Ods.Generator\EdFi.Ods.Generator.csproj", "{8924CF1E-C88B-4490-8324-D4013CD6B1CB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -217,6 +219,10 @@ Global
 		{538782E7-25DC-494D-902D-3EE2EC839DC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{538782E7-25DC-494D-902D-3EE2EC839DC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{538782E7-25DC-494D-902D-3EE2EC839DC6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8924CF1E-C88B-4490-8324-D4013CD6B1CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8924CF1E-C88B-4490-8324-D4013CD6B1CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8924CF1E-C88B-4490-8324-D4013CD6B1CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8924CF1E-C88B-4490-8324-D4013CD6B1CB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
