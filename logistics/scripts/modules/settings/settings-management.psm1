@@ -206,10 +206,10 @@ function Get-DefaultConnectionStringsByEngine {
     return  @{
         SQLServer  = @{
             ConnectionStrings = @{
-                ((Get-ConnectionStringKeyByDatabaseTypes)[(Get-DatabaseTypes).Ods])      = "Server=(local); Trusted_Connection=True; Database=EdFi_{0};"
-                ((Get-ConnectionStringKeyByDatabaseTypes)[(Get-DatabaseTypes).Admin])    = "Server=(local); Trusted_Connection=True; Database=EdFi_Admin;"
-                ((Get-ConnectionStringKeyByDatabaseTypes)[(Get-DatabaseTypes).Security]) = "Server=(local); Trusted_Connection=True; Database=EdFi_Security; Persist Security Info=True;"
-                ((Get-ConnectionStringKeyByDatabaseTypes)[(Get-DatabaseTypes).Master])   = "Server=(local); Trusted_Connection=True; Database=master;"
+                ((Get-ConnectionStringKeyByDatabaseTypes)[(Get-DatabaseTypes).Ods])      = "Server=(local); Trusted_Connection=True; Database=EdFi_{0};Encrypt=false;"
+                ((Get-ConnectionStringKeyByDatabaseTypes)[(Get-DatabaseTypes).Admin])    = "Server=(local); Trusted_Connection=True; Database=EdFi_Admin;Encrypt=false;"
+                ((Get-ConnectionStringKeyByDatabaseTypes)[(Get-DatabaseTypes).Security]) = "Server=(local); Trusted_Connection=True; Database=EdFi_Security; Persist Security Info=True;Encrypt=false;"
+                ((Get-ConnectionStringKeyByDatabaseTypes)[(Get-DatabaseTypes).Master])   = "Server=(local); Trusted_Connection=True; Database=master;Encrypt=false;"
             }
         }
         PostgreSQL = @{
