@@ -218,42 +218,12 @@ namespace EdFi.Ods.Api.IntegrationTestHarness
                     ConnectionString = odsConnectionString,
                 });
 
-            // Add Profiles
-            string[] profileFilenames = Directory.GetFiles(Directory.GetParent(AppContext.BaseDirectory).FullName, $"*Profiles.xml");
-
-            if(!string.IsNullOrEmpty(tenantIdentifier))
-            {
-                profileFilenames = profileFilenames.Union(Directory.GetFiles(Directory.GetParent(AppContext.BaseDirectory).FullName, $"*Profiles{tenantIdentifier}.xml")).ToArray();
-            }
-            
-            var profileDefinitionByName = new Dictionary<string, XmlNode>(StringComparer.OrdinalIgnoreCase);
-
-            foreach (var profileFilename in profileFilenames)
-            {
-                var _allDocs = new XmlDocument();
-                _allDocs.Load(profileFilename);
-
-                var profiles = new List<Profile>();
-                var profileDefinitions = _allDocs.SelectNodes("/Profiles/Profile");
-                foreach (XmlNode profileDefinition in profileDefinitions)
-                {
-                    string profileName = profileDefinition.Attributes["name"].Value;
-
-                    profiles.Add(
-                        new Profile()
-                        {
-                            ProfileDefinition = profileDefinition.OuterXml,
-                            ProfileName = profileName
-                        });
-                    
-                    profileDefinitionByName.Add(profileName, profileDefinition);
-                }
-                _clientAppRepo.CreateProfilesWithProfileDefinition(profiles);
-            }
+            var profileDefinitionByName = LoadProfilesForTenant(tenantIdentifier);
+            ImportProfiles(profileDefinitionByName);
 
             foreach (var vendor in _testHarnessConfiguration.Vendors.Where(x =>
-                string.IsNullOrEmpty(tenantIdentifier) ||
-                x.TenantIdentifier.Equals(tenantIdentifier, StringComparison.InvariantCultureIgnoreCase)))
+                         string.IsNullOrEmpty(tenantIdentifier) ||
+                         x.TenantIdentifier.Equals(tenantIdentifier, StringComparison.InvariantCultureIgnoreCase)))
             {
                 var user = _clientAppRepo.GetUser(vendor.Email) ??
                            _clientAppRepo.CreateUser(
@@ -354,6 +324,53 @@ namespace EdFi.Ods.Api.IntegrationTestHarness
             }
 
             return postmanEnvironment;
+        }
+
+        private Dictionary<string, XmlNode> LoadProfilesForTenant(string tenantIdentifier)
+        {
+            // Add Profiles
+            string[] profileFilenames = Directory.GetFiles(Directory.GetParent(AppContext.BaseDirectory).FullName, $"*Profiles.xml");
+
+            if(!string.IsNullOrEmpty(tenantIdentifier))
+            {
+                profileFilenames = profileFilenames.Union(Directory.GetFiles(Directory.GetParent(AppContext.BaseDirectory).FullName, $"*Profiles{tenantIdentifier}.xml")).ToArray();
+            }
+            
+            var profileDefinitionByName = new Dictionary<string, XmlNode>(StringComparer.OrdinalIgnoreCase);
+
+            foreach (var profileFilename in profileFilenames)
+            {
+                var doc = new XmlDocument();
+                doc.Load(profileFilename);
+
+                var profileDefinitions = doc.SelectNodes("/Profiles/Profile");
+
+                foreach (XmlNode profileDefinition in profileDefinitions)
+                {
+                    string profileName = profileDefinition.Attributes["name"].Value;
+
+                    profileDefinitionByName.Add(profileName, profileDefinition);
+                }
+            }
+
+            return profileDefinitionByName;
+        }
+
+        private void ImportProfiles(Dictionary<string, XmlNode> profileDefinitionByName)
+        {
+            var profiles = new List<Profile>();
+
+            foreach (var kvp in profileDefinitionByName)
+            {
+                profiles.Add(
+                    new Profile()
+                    {
+                        ProfileDefinition = kvp.Value.OuterXml,
+                        ProfileName = kvp.Key
+                    });
+            }
+
+            _clientAppRepo.CreateProfilesWithProfileDefinition(profiles);
         }
 
         private long PreventEducationOrganizationIdOverflow(long educationOrganizationId)

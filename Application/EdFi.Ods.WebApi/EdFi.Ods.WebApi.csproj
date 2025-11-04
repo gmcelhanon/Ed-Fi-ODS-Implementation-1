@@ -19,6 +19,14 @@
     <Content Include="../../NOTICES.md" Link="NOTICES.md" CopyToPublishDirectory="Always" />
     <Content Update="appsettings.Development.json" CopyToPublishDirectory="Never" CopyToOutputDirectory="Always" />
     <Content Update="log4net.development.config" CopyToPublishDirectory="Never" CopyToOutputDirectory="Always" />
+    <None Remove="ProfilesTenant1.xml" />
+    <Content Include="ProfilesTenant1.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Remove="ProfilesTenant2.xml" />
+    <Content Include="ProfilesTenant2.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Choose>
     <When Condition="'$(UseProjectsOverPackages)' == 'true'">
